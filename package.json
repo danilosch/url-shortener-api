@@ -1,13 +1,13 @@
 {
   "name": "url-shortener",
   "version": "1.0.0",
-  "main": "index.js",
+  "main": "server.js",
   "scripts": {
     "docker:build": "docker compose build",
     "docker:up": "docker compose up",
     "docker:down": "docker compose down",
-    "start:dev": "ts-node-dev --respawn src/app.ts",
-    "start:prod": "node dist/app.js",
+    "start:dev": "ts-node-dev --respawn src/server.ts",
+    "start:prod": "node dist/server.js",
     "build": "tsc",
     "lint": "eslint . --ext .ts",
     "test": "jest --passWithNoTests",
