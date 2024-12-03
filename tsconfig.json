@@ -1,12 +1,24 @@
 {
   "compilerOptions": {
-    "target": "ES6",
-    "module": "commonjs",
-    "outDir": "./dist",
-    "rootDir": "./src",
-    "esModuleInterop": true,
-    "skipLibCheck": true
+    "target": "ES2020",                         // Define a versão do JavaScript de saída.
+    "module": "commonjs",                       // Define o tipo de módulo (commonjs é usado no Node.js).
+    "strict": true,                              // Habilita verificações rigorosas de tipo.
+    "esModuleInterop": true,                     // Permite importação de módulos CommonJS em módulos ES.
+    "skipLibCheck": true,                        // Ignora verificações de tipo de bibliotecas.
+    "forceConsistentCasingInFileNames": true,    // Garante consistência no uso de maiúsculas/minúsculas nos nomes de arquivos.
+    "outDir": "./dist",                          // Diretório de saída para os arquivos compilados.
+    "rootDir": "./src",                          // Diretório raiz do código fonte.
+    "resolveJsonModule": true,                   // Permite importação de arquivos JSON como módulos.
+    "lib": ["es2020"],                           // Define as bibliotecas para o projeto (padrão ES2020).
+    "noImplicitAny": true,                       // Garante que nenhum tipo `any` implícito seja usado.
+    "moduleResolution": "node",                  // Resolve módulos no estilo do Node.js.
+    "allowJs": true,                             // Permite a inclusão de arquivos JavaScript.
+    "skipDefaultLibCheck": true                  // Ignora a verificação da biblioteca padrão do TypeScript.
   },
-  "include": ["src/**/*.ts"],
-  "exclude": ["node_modules"]
+  "include": [
+    "src/**/*.ts"                               // Incluir todos os arquivos TypeScript dentro da pasta 'src'.
+  ],
+  "exclude": [
+    "node_modules"                              // Excluir a pasta 'node_modules' para não compilar suas dependências.
+  ]
 }
