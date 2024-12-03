@@ -13,7 +13,8 @@
     "noImplicitAny": true,                       // Garante que nenhum tipo `any` implícito seja usado.
     "moduleResolution": "node",                  // Resolve módulos no estilo do Node.js.
     "allowJs": true,                             // Permite a inclusão de arquivos JavaScript.
-    "skipDefaultLibCheck": true                  // Ignora a verificação da biblioteca padrão do TypeScript.
+    "skipDefaultLibCheck": true,                  // Ignora a verificação da biblioteca padrão do TypeScript.
+    "typeRoots": ["./node_modules/@types"],
   },
   "include": [
     "src/**/*.ts"                               // Incluir todos os arquivos TypeScript dentro da pasta 'src'.

@@ -1,4 +1,3 @@
-version: '3.8'
 services:
   app:
     build:
@@ -11,18 +10,31 @@ services:
       - /usr/src/app/node_modules
     environment:
       NODE_ENV: development
+      DB_HOST: db
+      DB_PORT: 5432
+      DB_USER: admin
+      DB_PASS: admin
+      DB_DB: url_shortener
+    networks: 
+      - app-network
     command: npm run start:dev
+    depends_on: 
+      - db
   db:
     image: postgres:15-alpine
     restart: always
-    ports:
+    ports: 
       - "5432:5432"
     environment:
       POSTGRES_USER: admin
       POSTGRES_PASSWORD: admin
       POSTGRES_DB: url_shortener
-    volumes:
+    volumes: 
       - db-data:/var/lib/postgresql/data
-volumes:
+    networks: 
+      - app-network
+volumes: 
   db-data:
-  
+networks:
+  app-network:
+    driver: bridge
