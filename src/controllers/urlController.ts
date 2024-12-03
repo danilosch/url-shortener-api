@@ -1,7 +1,8 @@
 import { Request, Response } from "express";
-import { urlValidator } from "../validators/urlValidator";
-import { createHash } from "crypto";
 import pool from "../services/db";
+import { generateHash } from "../utils/hash";
+import logger from "../utils/logger";
+import { urlValidator } from "../validators/urlValidator";
 
 export const shortenUrl = async (
   req: Request,
@@ -13,26 +14,54 @@ export const shortenUrl = async (
     return res.status(400).json({ error: validation.error.errors });
   }
 
-  // Geração de uma URL curta usando hash
-  const hash = createHash("sha256")
-    .update(req.body.url)
-    .digest("base64")
-    .slice(0, 8); // Pega os primeiros 8 caracteres do hash
+  const protocol = req.protocol;
+  const host = req.headers.host;
 
-  const shortURL = `http://localhost:3000/${hash}`;
+  let alias = generateHash(req.body.url);
 
   try {
-    // Salvando a URL no PostgreSQL
     const client = await pool.connect();
+
+    await client.query("BEGIN"); // Inicia a transação
+
+    let retries = 3; // Número de tentativas para gerar novo alias
+    while (retries > 0) {
+      const result = await client.query("SELECT 1 FROM urls WHERE alias = $1", [
+        alias,
+      ]);
+
+      if (result.rowCount === 0) {
+        break; // Alias está disponível
+      }
+
+      alias = generateHash(alias + Math.random()); // Gera novo alias baseado no anterior
+      retries -= 1;
+    }
+
+    if (retries === 0) {
+      client.release();
+      return res.status(409).json({ error: "Failed to generate unique alias" });
+    }
+
+    const shortURL = `${protocol}://${host}/${alias}`;
     await client.query(
-      "INSERT INTO urls (original_url, short_url) VALUES ($1, $2)",
-      [req.body.url, shortURL]
+      "INSERT INTO urls (original_url, alias) VALUES ($1, $2)",
+      [req.body.url, alias]
     );
+
+    await client.query("COMMIT"); // Confirma a transação
     client.release();
 
     return res.status(201).json({ shortURL });
   } catch (err) {
-    console.error("Error inserting URL", err);
+    logger.error(`Error inserting URL: ${(err as Error).message}`);
+    try {
+      await pool.query("ROLLBACK"); // Reverte a transação em caso de erro
+    } catch (rollbackErr) {
+      logger.error(
+        `Error rolling back transaction: ${(rollbackErr as Error).message}`
+      );
+    }
     return res.status(500).json({ error: "Failed to store URL" });
   }
 };
@@ -41,13 +70,13 @@ export const getOriginalUrl = async (
   req: Request,
   res: Response
 ): Promise<void | Response<any, Record<string, any>>> => {
-  const { shortId } = req.params;
+  const { alias } = req.params;
 
   try {
     const client = await pool.connect();
     const result = await client.query(
-      "SELECT original_url FROM urls WHERE short_url = $1",
-      [`http://localhost:3000/${shortId}`]
+      "SELECT original_url FROM urls WHERE alias = $1",
+      [alias]
     );
     client.release();
 
@@ -57,7 +86,7 @@ export const getOriginalUrl = async (
 
     return res.redirect(result.rows[0].original_url);
   } catch (err) {
-    console.error("Error retrieving URL", err);
+    logger.error("Error retrieving URL", err);
     return res.status(500).json({ error: "Failed to retrieve URL" });
   }
 };

@@ -4,6 +4,6 @@ import { getOriginalUrl, shortenUrl } from "../controllers/urlController";
 const router = Router();
 
 router.post("/shorten", shortenUrl);
-router.get("/:shortId", getOriginalUrl);
+router.get("/:alias", getOriginalUrl);
 
 export default router;

@@ -5,7 +5,7 @@ export const initDB = async (): Promise<void> => {
     CREATE TABLE IF NOT EXISTS urls (
       id SERIAL PRIMARY KEY,
       original_url TEXT NOT NULL,
-      short_url TEXT NOT NULL UNIQUE
+      alias VARCHAR(6) NOT NULL UNIQUE
     );
   `;
 
