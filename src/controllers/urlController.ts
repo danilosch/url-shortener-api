@@ -92,7 +92,7 @@ export const updateUrl = async (req: Request, res: Response) => {
   if (!validation.success) {
     return res.status(400).json({ error: validation.error.errors });
   }
-  
+
   const { userId } = req.user;
   const { id } = req.params;
   const { url } = req.body;

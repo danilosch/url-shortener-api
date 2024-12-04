@@ -18,7 +18,6 @@ setupSwagger(app);
 app.use("/auth", authRouter);
 app.use("/", urlRouter);
 
-
 (async () => {
   await initDB();
 })();

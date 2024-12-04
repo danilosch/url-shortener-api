@@ -31,10 +31,10 @@ export const registerUser = async (
     const hashedPassword = await bcrypt.hash(password, 10);
 
     // Cria o usuário no banco
-    await pool.query("INSERT INTO users (email, password_hash) VALUES ($1, $2)", [
-      email,
-      hashedPassword,
-    ]);
+    await pool.query(
+      "INSERT INTO users (email, password_hash) VALUES ($1, $2)",
+      [email, hashedPassword]
+    );
 
     return res.status(201).json({ message: "User created successfully" });
   } catch (err) {
