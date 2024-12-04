@@ -14,17 +14,6 @@
     "test": "jest --passWithNoTests",
     "prepare": "husky install"
   },
-  "husky": {
-    "hooks": {
-      "pre-commit": "lint-staged"
-    }
-  },
-  "lint-staged": {
-    "*.ts": [
-      "eslint --fix",
-      "prettier --write"
-    ]
-  },
   "keywords": [],
   "author": "",
   "license": "ISC",
