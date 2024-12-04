@@ -81,6 +81,10 @@ cd url-shortener-api
 3. Construa e inicie os containers do Docker:
 
 ```bash
+docker compose up --build
+```
+OU
+```bash
 docker-compose up --build
 ```
 
