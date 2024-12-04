@@ -2,7 +2,7 @@
 
 ## Descrição
 
-A **URL Shortener API** é uma aplicação para encurtamento de URLs que permite aos usuários gerar links curtos e rastrear seus acessos. A API oferece funcionalidades para usuários autenticados e não autenticados, com autenticação JWT, validações de entrada.
+A **URL Shortener API** é uma aplicação para encurtamento de URLs que permite aos usuários gerar links curtos e rastrear seus acessos. A API oferece funcionalidades para usuários autenticados e não autenticados, com autenticação JWT, validações de entrada e controle de duplicidade ao criar URLs.
 
 ### Funcionalidades principais
 
