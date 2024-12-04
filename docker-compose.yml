@@ -10,30 +10,31 @@ services:
       - /usr/src/app/node_modules
     environment:
       NODE_ENV: development
+      JWT_SECRET: "ETYX6M5ufnc/b8rhsEHngVkHniAncMB0JWTKvEUFN3U="
       DB_HOST: db
       DB_PORT: 5432
       DB_USER: admin
       DB_PASS: admin
       DB_DB: url_shortener
-    networks: 
+    networks:
       - app-network
     command: npm run start:dev
-    depends_on: 
+    depends_on:
       - db
   db:
     image: postgres:15-alpine
     restart: always
-    ports: 
+    ports:
       - "5432:5432"
     environment:
       POSTGRES_USER: admin
       POSTGRES_PASSWORD: admin
       POSTGRES_DB: url_shortener
-    volumes: 
+    volumes:
       - db-data:/var/lib/postgresql/data
-    networks: 
+    networks:
       - app-network
-volumes: 
+volumes:
   db-data:
 networks:
   app-network:
