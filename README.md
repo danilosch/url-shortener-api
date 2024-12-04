@@ -92,10 +92,11 @@ A documentação Swagger pode ser acessada em `http://localhost:3000/api-docs`.
 
 - `POST /register`: Registra um novo usuário.
 - `POST /login`: Realiza login e retorna um JWT token.
-- `POST /shorten`: Encurta uma URL (não requer autenticação, mas pode associar ao usuário autenticado).
+- `POST /urls`: Encurta uma URL (não requer autenticação, mas pode associar ao usuário autenticado).
 - `GET /urls`: Lista as URLs encurtadas pelo usuário autenticado, com contagem de cliques.
 - `PUT /urls/:id`: Atualiza uma URL encurtada pelo usuário autenticado.
 - `DELETE /urls/:id`: Exclui logicamente uma URL do banco de dados.
+- `GET /:alias`: Endpoint da URL encurtada em si, redireciona para a URL original.
 
 ## Licença
 
